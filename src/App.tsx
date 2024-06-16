@@ -1,53 +1,46 @@
-import  { useState, useEffect } from 'react';
-import './index.css';
+import React, { useState, useEffect } from 'react';
+import './styles/App.css';
+import TodoList from './components/TodoList';
+import { Todo } from './models/Todo';
+import { fetchTodos } from './services/todoService';
+import { toggleTodo } from './helpers/helpers';
 
-function App() {
-  const [x, setX] = useState([]); 
-  const [y, setY] = useState(true); 
+const App: React.FC = () => {
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<unknown | string | null>(null);
 
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/todos/')
-      .then(response => response.json())
-      .then(data => {
-        setX(data);
-        setY(false); // Estado innecesario
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
+    const loadTodos = async () => {
+      try {
+        const todos = await fetchTodos();
+        setTodos(todos);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadTodos();
   }, []);
 
-  const toggleTodo = (id: number) => {
-    const updatedTodos = x.map((todo: any) => {
-      if (todo.id === id) {
-        return { ...todo, completed: !todo.completed }; 
-      }
-      return todo;
-    });
-    setX(updatedTodos);
+  const handleToggleTodo = (id: number) => {
+    const updatedTodos = toggleTodo(todos, id);
+    setTodos(updatedTodos);
   };
 
   return (
-    <div className='container'>
-      <h1>Bad Practices TODO</h1>
-      {y ? (
+    <section>
+      <h1>To Do List</h1>
+      {loading ? (
         <p>Loading...</p>
+      ) : error ? (
+        <p>Oops try again later!</p>
       ) : (
-        <ul>
-          {x.map((item: any) => (
-            <li key={item.id}>
-              <input 
-                type="checkbox" 
-                checked={item.completed} 
-                onChange={() => toggleTodo(item.id)} 
-              />
-              <span>{item.title}</span>
-            </li>
-          ))}
-        </ul>
+        <TodoList todos={todos} onToggle={handleToggleTodo} />
       )}
-    </div>
+    </section>
   );
-}
+};
 
 export default App;
