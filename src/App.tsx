@@ -2,8 +2,8 @@ import  { useState, useEffect } from 'react';
 import './index.css';
 
 function App() {
-  const [x, setX] = useState([]); // Malos nombres de variables
-  const [y, setY] = useState(true); // Nombres no descriptivos
+  const [x, setX] = useState([]); 
+  const [y, setY] = useState(true); 
 
   useEffect(() => {
     fetch('https://jsonplaceholder.typicode.com/todos/')
@@ -20,11 +20,11 @@ function App() {
   const toggleTodo = (id: number) => {
     const updatedTodos = x.map((todo: any) => {
       if (todo.id === id) {
-        return { ...todo, completed: !todo.completed }; // Mal manejo del estado
+        return { ...todo, completed: !todo.completed }; 
       }
       return todo;
     });
-    setX(updatedTodos); // Modificación directa del estado
+    setX(updatedTodos);
   };
 
   return (
@@ -34,7 +34,7 @@ function App() {
         <p>Loading...</p>
       ) : (
         <ul>
-          {x.map((item: any) => ( // Usar `any` en lugar de tipos específicos
+          {x.map((item: any) => (
             <li key={item.id}>
               <input 
                 type="checkbox" 
