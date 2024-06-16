@@ -2,6 +2,9 @@
 
 This project is a Todo List application built with React, Vite, and TypeScript. It intentionally includes various bad practices to help developers identify and learn what to avoid in software development. Despite these bad practices, the application is functional.
 
+<img width="1797" alt="Screenshot 2024-06-16 at 17 58 47" src="https://github.com/contracamilo/test-as/assets/27745159/16a7e114-f7ea-49c9-9f09-fffb724f70f4">
+
+
 ## Getting Started
 Clone the repository:
 
